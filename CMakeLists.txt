@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.12)
 
-project(imgui_app)
+project(imgui_app_base)
 
 include(./cmake/imgui-gl.cmake)
 

@@ -46,7 +46,8 @@ class AppBase
 
     void Run()
     {
-        while (!glfwWindowShouldClose(window))
+        bool cbk_return_false = false;
+        while (!glfwWindowShouldClose(window) && !cbk_return_false)
         {
             /* Render here */
             glClear(GL_COLOR_BUFFER_BIT);
@@ -57,7 +58,12 @@ class AppBase
             {
                 for (auto &cbk : callbacks)
                 {
-                    cbk();
+                    if (!cbk())
+                    {
+                        cbk_return_false = true;
+                        printf("ImGui AppBase callback execute faild");
+                        break;
+                    }
                 }
             }
 

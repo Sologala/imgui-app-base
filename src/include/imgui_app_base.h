@@ -131,17 +131,21 @@ class AppBase
         {
             return;
         }
-        if (opt.font_path.empty() == 0 || opt.font_size)
+        if (opt.font_path.empty() && opt.font_size == 0)
         {
             return;
         }
-
-        ImGuiIO &io = ImGui::GetIO();
-        ImFontConfig font_cfg;
-        // TODO: implementing font loading
-
-        font_cfg.SizePixels = opt.font_size;
-        auto dft_font = io.Fonts->AddFontDefault(&font_cfg);
+        else if (opt.font_path.empty() && opt.font_size)
+        {
+            ImGuiIO &io = ImGui::GetIO();
+            ImFontConfig font_cfg;
+            font_cfg.SizePixels = opt.font_size;
+            auto dft_font = io.Fonts->AddFontDefault(&font_cfg);
+        }
+        else if (opt.font_path.empty() && opt.font_size)
+        {
+            // TODO implementing of font loading from file
+        }
         return;
     }
 

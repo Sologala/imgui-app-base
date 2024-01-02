@@ -2,7 +2,13 @@
 #define __IMGUI_APP_HPP_
 #pragma once
 
+#if WIN32
+    #include <windows.h>
+#endif
+#include <gl/glew.h>
+#include <gl/GL.h>
 #include <GLFW/glfw3.h>
+
 #include <functional>
 #include <imgui.h>
 #include <imgui_impl_glfw.h>

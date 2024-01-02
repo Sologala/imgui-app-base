@@ -95,10 +95,25 @@ add_library(imgui
   ${CPP_SOURCE_FILES}
 )
 
+find_package( OpenGL 3.0 REQUIRED )
+find_package(GLEW)
+if (NOT GLEW_FOUND)
+    message("GLEW NOT Found")
 
-find_package( OpenGL REQUIRED )
-# find_package( GLEW REQUIRED )
-target_link_libraries(imgui PUBLIC ${OPENGL_LIBRARIES} glfw ${GLEW_LIBRARIES})
+    FetchContent_Declare(
+      glew
+      GIT_REPOSITORY https://github.com/Perlmint/glew-cmake.git
+      # GIT_TAG glew-cmake-2.2.0
+    )
+    FetchContent_GetProperties(glew)
+    if(NOT glew_POPULATED)
+# Fetch the content using previously declared details
+        FetchContent_Populate(glew)
+        add_subdirectory(${glew_SOURCE_DIR} ${glew_BINARY_DIR})
+    endif()
+endif()
+
+target_link_libraries(imgui PUBLIC ${OPENGL_LIBRARIES} glfw libglew_shared )
 # target_include_directories(imgui PUBLIC ${GLEW_INCLUDE_DIRS})
 
 message("CMAKE_CURRENT_SOURCE_DIR  >>> " ${CMAKE_CURRENT_SOURCE_DIR})

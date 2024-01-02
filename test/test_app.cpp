@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
         return true;
     });
 
-    app.AddDrawCallBack([]() { return false; }); // Cbk return false will terminate whole application
+    /* app.AddDrawCallBack([]() { return false; }); // Cbk return false will terminate whole application */
     app.Run();
 
     return 0;

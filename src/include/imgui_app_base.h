@@ -54,31 +54,12 @@ class AppBase
             ImGui_ImplGlfw_NewFrame();
             ImGui::NewFrame();
 
-            // Demonstrate the various window flags. Typically you would just use the default!
-            static bool no_titlebar = false;
-            static bool no_scrollbar = false;
-            static bool no_menu = false;
-            static bool no_move = false;
-            static bool no_resize = false;
-            static bool no_collapse = false;
-            static bool no_close = false;
-            static bool no_nav = false;
-            static bool no_background = false;
-            static bool no_bring_to_front = false;
-            static bool unsaved_document = false;
-
-            ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoScrollbar |
-                                            ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize |
-                                            ImGuiWindowFlags_NoCollapse;
-            bool is_open = true;
-            ImGui::Begin("Panel", &is_open, window_flags);
             {
                 for (auto &cbk : callbacks)
                 {
                     cbk();
                 }
             }
-            ImGui::End();
 
             // We specify a default position/size in case there's no data in the .ini file.
             // We only do it to make the demo applications a little more welcoming, but typically this isn't required.

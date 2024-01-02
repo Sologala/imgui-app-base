@@ -17,6 +17,7 @@ int main(int argc, char *argv[])
     bool clicked = false;
     app.AddDrawCallBack([clicked]() {
         // Main processes is handled by AddDrawCallBack.
+        ImGui::Begin("app", nullptr);
         ImGui::SetWindowSize(ImVec2(800, 600));
         ImGui::SetWindowPos(ImVec2(0, 0));
 
@@ -25,8 +26,10 @@ int main(int argc, char *argv[])
         {
             ImGui::Text("clicked");
         }
-        ImGui::Text("dsajfksadjfkjsdf");
+        ImGui::Text("Static Text");
+        ImGui::End();
         return true;
+
     });
 
     app.Run();

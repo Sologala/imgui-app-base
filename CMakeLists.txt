@@ -8,7 +8,6 @@ add_library(${PROJECT_NAME} INTERFACE)
 
 target_link_libraries(${PROJECT_NAME} INTERFACE imgui)
 
-target_include_directories(${PROJECT_NAME} INTERFACE src)
 target_include_directories(${PROJECT_NAME} INTERFACE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/src/include>
 )

@@ -1,4 +1,3 @@
-#include <imgui.h>
 #include <imgui_app_base.h>
 
 int main(int argc, char *argv[])
@@ -8,6 +7,7 @@ int main(int argc, char *argv[])
     ImGuiApp::AppBase app("test-app", ImVec2(800, 600), opt);
     bool clicked = false;
     app.AddDrawCallBack([clicked]() {
+        ImGui::Begin("app", nullptr);
         ImGui::SetWindowSize(ImVec2(800, 600));
         ImGui::SetWindowPos(ImVec2(0, 0));
 
@@ -17,6 +17,7 @@ int main(int argc, char *argv[])
             ImGui::Text("clicked");
         }
         ImGui::Text("Static Text");
+        ImGui::End();
         return true;
     });
 

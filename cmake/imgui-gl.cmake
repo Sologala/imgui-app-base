@@ -113,7 +113,7 @@ if (NOT GLEW_FOUND)
     endif()
 endif()
 
-target_link_libraries(imgui PUBLIC ${OPENGL_LIBRARIES} glfw libglew_shared)
+target_link_libraries(imgui PUBLIC ${OPENGL_LIBRARIES} glfw libglew_static)
 # target_include_directories(imgui PUBLIC ${GLEW_INCLUDE_DIRS})
 
 message("CMAKE_CURRENT_SOURCE_DIR  >>> " ${CMAKE_CURRENT_SOURCE_DIR})

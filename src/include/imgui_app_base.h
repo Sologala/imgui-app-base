@@ -104,10 +104,11 @@ class AppBase
             throw std::runtime_error("Windows create faild");
         }
         glfwMakeContextCurrent(window);
+        glewInit();
+
         context = ImGui::CreateContext();
         ImGuiIO &io = ImGui::GetIO();
         (void)io;
-
         ImGui_ImplGlfw_InitForOpenGL(window, true);
         ImGui_ImplOpenGL3_Init("#version 330");
         init_success = true;

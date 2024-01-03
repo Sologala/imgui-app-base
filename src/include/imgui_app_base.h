@@ -3,11 +3,12 @@
 #pragma once
 
 #if WIN32
-    #include <windows.h>
+#include <windows.h>
 #endif
+// clang-format off
 #include <gl/glew.h>
-#include <gl/GL.h>
 #include <GLFW/glfw3.h>
+// clang-format on
 
 #include <functional>
 #include <imgui.h>

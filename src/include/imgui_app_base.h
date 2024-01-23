@@ -92,6 +92,10 @@ class AppBase
   protected:
     bool BaseInit()
     {
+        auto glfw_error_callback = [](int error_code, const char *description) {
+            printf("[GLFW] err code %x, err description %s\n", error_code, description);
+        };
+        glfwSetErrorCallback(glfw_error_callback);
         if (!glfwInit())
         {
             throw std::runtime_error("Glfw init faild");

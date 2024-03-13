@@ -1,6 +1,7 @@
 #include <imgui_app_base.h>
+#if defined(WIN32)
 #include <windowsx.h>
-
+#endif
 
 int main(int argc, char *argv[])
 {

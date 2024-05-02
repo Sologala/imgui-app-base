@@ -14,10 +14,13 @@
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
-#include <iostream>
+#include <stdexcept>
 #include <string>
-#include <thread>
 #include <vector>
+
+#ifdef ENABLE_PLOT
+#include <implot.h>
+#endif // ENABLE_PLOT
 
 namespace ImGuiApp
 {
@@ -43,7 +46,12 @@ class AppBase
         ImGui_ImplOpenGL3_Shutdown();
         ImGui_ImplGlfw_Shutdown();
         ImGui::DestroyContext();
+#if ENABLE_PLOT
+        ImPlot::DestroyContext();
+#endif // ENABLE_PLOT
         glfwTerminate();
+
+        delete font;
     };
 
     void AddDrawCallBack(DrawCallBack cbk)
@@ -90,68 +98,15 @@ class AppBase
     }
 
   protected:
-    bool BaseInit()
-    {
-        auto glfw_error_callback = [](int error_code, const char *description) {
-            printf("[GLFW] err code %x, err description %s\n", error_code, description);
-        };
-        glfwSetErrorCallback(glfw_error_callback);
-        if (!glfwInit())
-        {
-            throw std::runtime_error("Glfw init faild");
-        }
-
-        /* Create a windowed mode window and its OpenGL context */
-        window = glfwCreateWindow(wnd_size.x, wnd_size.y, wnd_name.c_str(), NULL, NULL);
-        if (!window)
-        {
-            glfwTerminate();
-            throw std::runtime_error("Windows create faild");
-        }
-        glfwMakeContextCurrent(window);
-        glewInit();
-
-        context = ImGui::CreateContext();
-        ImGuiIO &io = ImGui::GetIO();
-        (void)io;
-        ImGui_ImplGlfw_InitForOpenGL(window, true);
-        ImGui_ImplOpenGL3_Init("#version 330");
-        init_success = true;
-
-        SetFontSize();
-
-        return true;
-    }
+    bool BaseInit();
 
   private:
-    void SetFontSize()
-    {
-        if (!init_success)
-        {
-            return;
-        }
-        if (opt.font_path.empty() && opt.font_size == 0)
-        {
-            return;
-        }
-        else if (opt.font_path.empty() && opt.font_size)
-        {
-            ImGuiIO &io = ImGui::GetIO();
-            ImFontConfig font_cfg;
-            font_cfg.SizePixels = opt.font_size;
-            auto dft_font = io.Fonts->AddFontDefault(&font_cfg);
-        }
-        else if (opt.font_path.empty() && opt.font_size)
-        {
-            // TODO implementing of font loading from file
-        }
-        return;
-    }
+    void SetFontSize();
 
   protected:
     GLFWwindow *window;
     ImGuiContext *context;
-
+    ImFont *font{nullptr};
     std::string wnd_name;
     ImVec2 wnd_size;
     Option opt;

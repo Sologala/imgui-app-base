@@ -1,0 +1,65 @@
+#include <imgui_app_base.h>
+#include "Unbutu.h"
+
+namespace ImGuiApp
+{
+bool AppBase::BaseInit()
+{
+    auto glfw_error_callback = [](int error_code, const char *description) {
+        printf("[GLFW] err code %x, err description %s\n", error_code, description);
+    };
+    glfwSetErrorCallback(glfw_error_callback);
+    if (!glfwInit())
+    {
+        throw std::runtime_error("Glfw init faild");
+    }
+
+    /* Create a windowed mode window and its OpenGL context */
+    window = glfwCreateWindow(wnd_size.x, wnd_size.y, wnd_name.c_str(), NULL, NULL);
+    if (!window)
+    {
+        glfwTerminate();
+        throw std::runtime_error("Windows create faild");
+    }
+    glfwMakeContextCurrent(window);
+    glewInit();
+
+    context = ImGui::CreateContext();
+#ifdef ENABLE_PLOT
+    ImPlot::CreateContext();
+#endif // ENABLE_PLOT
+    ImGuiIO &io = ImGui::GetIO();
+    (void)io;
+    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplOpenGL3_Init("#version 330");
+    init_success = true;
+
+    SetFontSize();
+
+    return true;
+}
+
+void AppBase::SetFontSize()
+{
+    if (!init_success)
+    {
+        return;
+    }
+    if (opt.font_path.empty() && opt.font_size == 0)
+    {
+        return;
+    }
+    else if (opt.font_path.empty() && opt.font_size)
+    {
+        ImGuiIO &io = ImGui::GetIO();
+        ImFontConfig font_cfg;
+
+        font_cfg.SizePixels = opt.font_size;
+        /* io.Fonts->AddFontDefault(); */
+        /* font_cfg.MergeMode = true; */
+        ImFont *font = io.Fonts->AddFontFromMemoryTTF(&Ubuntu_Regular, sizeof(Ubuntu_Regular), 32.0f, &font_cfg,
+                                                      io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
+    }
+    return;
+}
+} // namespace ImGuiApp

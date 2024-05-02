@@ -1,5 +1,10 @@
 cmake_minimum_required(VERSION 3.12)
 
-set(CMAKE_EXPORT_COMPILE_COMMANDS on)
 add_executable(test_app ./test_app.cpp)
-target_link_libraries(test_app  imgui_app_base)
+target_link_libraries(test_app imgui_app_base)
+
+if(ENABLE_PLOT)
+  add_executable(implot_demo ./test_plot_demo.cpp
+                             ../third_party/implot/implot_demo.cpp)
+  target_link_libraries(implot_demo imgui_app_base)
+endif()

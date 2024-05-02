@@ -55,6 +55,7 @@ void AppBase::SetFontSize()
         ImFontConfig font_cfg;
 
         font_cfg.SizePixels = opt.font_size;
+        font_cfg.FontDataOwnedByAtlas = false;
         ImFont *font = io.Fonts->AddFontFromMemoryTTF(&Ubuntu_Regular, sizeof(Ubuntu_Regular), 32.0f, &font_cfg,
                                                       io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
     }

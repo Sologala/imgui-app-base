@@ -50,8 +50,6 @@ class AppBase
         ImPlot::DestroyContext();
 #endif // ENABLE_PLOT
         glfwTerminate();
-
-        delete font;
     };
 
     void AddDrawCallBack(DrawCallBack cbk)
@@ -106,7 +104,6 @@ class AppBase
   protected:
     GLFWwindow *window;
     ImGuiContext *context;
-    ImFont *font{nullptr};
     std::string wnd_name;
     ImVec2 wnd_size;
     Option opt;

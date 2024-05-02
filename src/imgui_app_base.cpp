@@ -55,8 +55,6 @@ void AppBase::SetFontSize()
         ImFontConfig font_cfg;
 
         font_cfg.SizePixels = opt.font_size;
-        /* io.Fonts->AddFontDefault(); */
-        /* font_cfg.MergeMode = true; */
         ImFont *font = io.Fonts->AddFontFromMemoryTTF(&Ubuntu_Regular, sizeof(Ubuntu_Regular), 32.0f, &font_cfg,
                                                       io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
     }

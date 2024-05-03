@@ -14,6 +14,12 @@ bool AppBase::BaseInit()
         throw std::runtime_error("Glfw init faild");
     }
 
+    if (wnd_size.x < 1.f && wnd_size.y < 1.f)
+    {
+        const GLFWvidmode *mode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+        wnd_size.x *= mode->width;
+        wnd_size.y *= mode->height;
+    }
     /* Create a windowed mode window and its OpenGL context */
     window = glfwCreateWindow(wnd_size.x, wnd_size.y, wnd_name.c_str(), NULL, NULL);
     if (!window)

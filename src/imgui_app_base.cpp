@@ -29,7 +29,7 @@ bool AppBase::BaseInit()
     ImPlot::CreateContext();
 #endif // ENABLE_PLOT
     ImGuiIO &io = ImGui::GetIO();
-    (void)io;
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 330");
     init_success = true;

@@ -32,7 +32,7 @@ if(ENABLE_IMGUI)
     FetchContent_Declare(
       imgui
       GIT_REPOSITORY https://github.com/ocornut/imgui.git
-      # GIT_TAG v1.82
+      GIT_TAG v1.90.5-docking
     )
     if (NOT imgui_POPULATED) # Have we downloaded yet?
       set(FETCHCONTENT_QUIET NO)

@@ -13,6 +13,11 @@ bool AppBase::BaseInit()
     {
         throw std::runtime_error("Glfw init faild");
     }
+    glfwWindowHint(GLFW_SAMPLES, 4);
+    glEnable(GL_MULTISAMPLE);
+    glEnable(GL_LINE_SMOOTH);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     if (wnd_size.x < 1.f && wnd_size.y < 1.f)
     {

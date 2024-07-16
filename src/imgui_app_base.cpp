@@ -1,5 +1,5 @@
-#include <imgui_app_base.h>
 #include "Unbutu.h"
+#include <imgui_app_base.h>
 
 namespace ImGuiApp
 {
@@ -62,10 +62,10 @@ void AppBase::SetFontSize()
     }
     else if (opt.font_path.empty() && opt.font_size)
     {
-        ImGuiIO &io = ImGui::GetIO();
+        ImGuiIO     &io = ImGui::GetIO();
         ImFontConfig font_cfg;
 
-        font_cfg.SizePixels = opt.font_size;
+        font_cfg.SizePixels           = opt.font_size;
         font_cfg.FontDataOwnedByAtlas = false;
         ImFont *font = io.Fonts->AddFontFromMemoryTTF(&Ubuntu_Regular, sizeof(Ubuntu_Regular), 32.0f, &font_cfg,
                                                       io.Fonts->GetGlyphRangesChineseSimplifiedCommon());

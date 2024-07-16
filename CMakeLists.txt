@@ -22,8 +22,10 @@ if(ENABLE_PLOT)
   list(APPEND APP_SOURCE_FILES ./third_party/implot/implot.cpp)
 endif()
 
+find_package(Eigen3 REQUIRED)
+
 add_library(${PROJECT_NAME} ${APP_SOURCE_FILES})
-target_link_libraries(${PROJECT_NAME} PUBLIC imgui)
+target_link_libraries(${PROJECT_NAME} PUBLIC imgui Eigen3::Eigen)
 target_include_directories(${PROJECT_NAME}
                            PUBLIC $<BUILD_INTERFACE:${APP_INCLUDE_DIRS}>)
 

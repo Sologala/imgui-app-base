@@ -30,7 +30,7 @@ class AppBase
     struct Option
     {
         std::string font_path;
-        int font_size;
+        int         font_size;
     };
 
     using DrawCallBack = std::function<bool()>;
@@ -52,9 +52,12 @@ class AppBase
         glfwTerminate();
     };
 
-    void AddDrawCallBack(DrawCallBack cbk)
+    void AddDrawCallBack(DrawCallBack cbk, bool after = false)
     {
-        callbacks.emplace_back(cbk);
+        if (after)
+            callbacksAfter.emplace_back(cbk);
+        else
+            callbacks.emplace_back(cbk);
     }
 
     void Run()
@@ -63,7 +66,6 @@ class AppBase
         while (!glfwWindowShouldClose(window) && !cbk_return_false)
         {
             /* Render here */
-            glClear(GL_COLOR_BUFFER_BIT);
             ImGui_ImplOpenGL3_NewFrame();
             ImGui_ImplGlfw_NewFrame();
             ImGui::NewFrame();
@@ -84,6 +86,17 @@ class AppBase
             // We only do it to make the demo applications a little more welcoming, but typically this isn't required.
 
             ImGui::Render();
+            {
+                for (auto &cbk : callbacksAfter)
+                {
+                    if (!cbk())
+                    {
+                        cbk_return_false = true;
+                        printf("ImGui AppBase callback execute faild");
+                        break;
+                    }
+                }
+            }
 
             ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
@@ -102,15 +115,16 @@ class AppBase
     void SetFontSize();
 
   protected:
-    GLFWwindow *window;
+    GLFWwindow   *window;
     ImGuiContext *context;
-    std::string wnd_name;
-    ImVec2 wnd_size;
-    Option opt;
-    bool init_success = false;
+    std::string   wnd_name;
+    ImVec2        wnd_size;
+    Option        opt;
+    bool          init_success = false;
 
     // draw callbacks
     std::vector<DrawCallBack> callbacks;
+    std::vector<DrawCallBack> callbacksAfter;
 };
 } // namespace ImGuiApp
 

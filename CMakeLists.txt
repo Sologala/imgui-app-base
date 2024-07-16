@@ -29,6 +29,10 @@ target_link_libraries(${PROJECT_NAME} PUBLIC imgui Eigen3::Eigen)
 target_include_directories(${PROJECT_NAME}
                            PUBLIC $<BUILD_INTERFACE:${APP_INCLUDE_DIRS}>)
 
+if (MSVC)
+add_definitions(-DNOMINMAX)
+endif()
+
 if(BUILD_TEST)
   message("BUILD TEST")
   add_subdirectory(test)

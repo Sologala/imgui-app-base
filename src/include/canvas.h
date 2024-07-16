@@ -5,6 +5,7 @@
 #include <Eigen/Geometry>
 #include <frame_buffer_manager.h>
 
+#define M_PI 3.1415926
 class Camera
 {
   public:
@@ -26,14 +27,14 @@ class Camera
         view = lookAt(eye, center, up);
 
         // 设置投影矩阵
-        float       near        = 0.1f;                               // 近裁剪面
-        float       far         = 100.0f;                             // 远裁剪面
+        float       near_        = 0.1f;                               // 近裁剪面
+        float       far_         = 100.0f;                             // 远裁剪面
         float       fov         = m_zoom / 180 * M_PI;                // 垂直视场角度 (弧度)
         float       aspectRatio = (float)fb_width / (float)fb_height; // 宽高比
         const float tanHalfFovy = tan(0.5 * fov);
 
         Eigen::Matrix4f projection = Eigen::Matrix4f::Zero();
-        projection                 = perspective(m_zoom, aspectRatio, near, far);
+        projection                 = perspective(m_zoom, aspectRatio, near_, far_);
         // 计算总的MVP矩阵
         return (projection * view.matrix() * model.matrix());
     }

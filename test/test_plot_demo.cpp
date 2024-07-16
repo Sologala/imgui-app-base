@@ -3,8 +3,9 @@
 #include <implot.h>
 #include <math.h>
 #if defined(WIN32)
-#include <windowsx.h>
+// #include <windowsx.h>
 #endif
+#include <algorithm>
 
 struct ScrollingBuffer
 {
@@ -51,7 +52,7 @@ int main(int argc, char *argv[])
         lst_ts = cur_ts;
         static ScrollingBuffer dataAnalog;
         static float t = 0;
-        dataAnalog.AddPoint(t, 1000.f / std::fmax(static_cast<double>(diff), 0.0001f));
+        dataAnalog.AddPoint(t, 1000.f / std::fmax(static_cast<double>(diff), 0.0001));
 
         t += ImGui::GetIO().DeltaTime;
         static float rratios[] = {3, 1};

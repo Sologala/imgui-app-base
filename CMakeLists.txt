@@ -13,7 +13,9 @@ set(APP_SOURCE_FILES "")
 add_subdirectory(./third_party/)
 
 list(APPEND APP_INCLUDE_DIRS ./src/include)
-list(APPEND APP_SOURCE_FILES ./src/imgui_app_base.cpp)
+
+file(GLOB_RECURSE APP_SOURCE_FILES src/*.cpp)
+# message("SOURCE FILE " ${APP_SOURCE_FILES})
 
 if(ENABLE_PLOT)
   add_definitions(-DENABLE_PLOT)
@@ -29,8 +31,8 @@ target_link_libraries(${PROJECT_NAME} PUBLIC imgui Eigen3::Eigen)
 target_include_directories(${PROJECT_NAME}
                            PUBLIC $<BUILD_INTERFACE:${APP_INCLUDE_DIRS}>)
 
-if (MSVC)
-add_definitions(-DNOMINMAX)
+if(MSVC)
+  add_definitions(-DNOMINMAX)
 endif()
 
 if(BUILD_TEST)

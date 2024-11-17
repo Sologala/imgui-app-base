@@ -1,4 +1,7 @@
+#include "canvas/primitives/cylinder.h"
+#include <canvas/primitives/mesh.h>
 #include <imgui_app_base.h>
+
 #if defined(WIN32)
 #include <windowsx.h>
 #endif
@@ -13,7 +16,14 @@ int main(int argc, char *argv[])
 
     bool clicked = false;
 
-    Canvas canvas(800, 600);
+    ImGuiCanvas canvas("viewport");
+
+    Cylinder::Sptr cylinder = std::make_shared<Cylinder>();
+
+    Mesh::Sptr mesh = std::make_shared<Mesh>("resource/sedan.stl");
+    mesh->SetAlpha(0.85f);
+    canvas.AddDrawable("mesh", mesh, true);
+    // canvas.AddDrawable("cylinder", cylinder);
 
     app.AddDrawCallBack([clicked]() {
         ImGui::Begin("app", nullptr);
@@ -30,31 +40,11 @@ int main(int argc, char *argv[])
         return true;
     });
     app.AddDrawCallBack([&]() {
-        ImGui::Begin("view_port", nullptr);
-        const float window_width  = ImGui::GetContentRegionAvail().x;
-        const float window_height = ImGui::GetContentRegionAvail().y;
-
-        canvas.ScaleTo(window_width, window_height);
-
-        ImVec2 pos = ImGui::GetCursorScreenPos();
-
-        ImGui::GetWindowDrawList()->AddImage(canvas.GetTextureId(), ImVec2(pos.x, pos.y),
-                                             ImVec2(pos.x + window_width, pos.y + window_height), ImVec2(0, 1),
-                                             ImVec2(1, 0));
-
-        ImGui::End();
+        canvas.Draw();
         return true;
     });
 
-    app.AddDrawCallBack(
-        [&]() {
-            static int cnt = 0;
-            canvas.cam.m_x_rot += ((cnt / 100) % 2 == 1 ? 1 : -1) * 0.5;
-            canvas.cam.m_z_rot += ((cnt / 100) % 2 == 1 ? 1 : -1) * 0.5;
-            canvas.Rend();
-            return true;
-        },
-        true);
+    // load stl
 
     /* app.AddDrawCallBack([]() { return false; }); // Cbk return false will terminate whole application */
     app.Run();

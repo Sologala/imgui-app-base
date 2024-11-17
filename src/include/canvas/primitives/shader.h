@@ -1,6 +1,4 @@
-#ifndef SHADER_H
-#define SHADER_H
-
+#pragma once
 #include <fstream>
 #include <glad/gl.h>
 #include <iostream>
@@ -17,7 +15,12 @@ class Shader
 
     // constructor generates the shader on the fly
     // ------------------------------------------------------------------------
+    Shader() = default;
     Shader(const std::string &vs_str, const std::string &fs_str)
+    {
+        CompileShader(vs_str, fs_str);
+    };
+    void CompileShader(const std::string &vs_str, const std::string &fs_str)
     {
         glGenVertexArrays(1, &vao);
         glGenBuffers(1, &vbo);
@@ -52,6 +55,13 @@ class Shader
         glDeleteShader(vertex);
         glDeleteShader(fragment);
     }
+    ~Shader()
+    {
+        glDeleteProgram(id_program);
+        glDeleteVertexArrays(1, &vao);
+        glDeleteBuffers(1, &vbo);
+        glDeleteBuffers(1, &ebo);
+    }
     // activate the shader
     // ------------------------------------------------------------------------
     void Bind()
@@ -79,17 +89,24 @@ class Shader
         glUniform1f(glGetUniformLocation(id_program, name.c_str()), value);
     }
 
+    void setUniformMatrix4x4(const std::string &var_name, GLfloat *data)
+    {
+        setUniformMatrix4x4(var_name, 1, GL_FALSE, data);
+    }
+    void setUniformVec3(const std::string &var_name, GLint count, GLfloat *data)
+    {
+        Bind();
+        GLuint id = glGetUniformLocation(id_program, var_name.c_str());
+        if (id != -1)
+            glUniform3fv(id, count, data);
+        UnBind();
+    }
     void setUniformMatrix4x4(const std::string &var_name, GLint count, GLboolean need_transpose, GLfloat *data)
     {
         Bind();
         GLuint id = glGetUniformLocation(id_program, var_name.c_str());
-        /* LOGI("program {} has {} id with {}", id_program, var_name.c_str(), id); */
-        /* for (int i = 0; i < 16; i+=4) */
-        /* { */
-        /*     LOGI("{} {} {} {}", data[i], data[i + 1],data[i + 2],data[i + 3]); */
-        /* } */
-        /* LOGI("----------"); */
-        glUniformMatrix4fv(id, count, need_transpose, data);
+        if (id != -1)
+            glUniformMatrix4fv(id, count, need_transpose, data);
         UnBind();
     }
 
@@ -147,5 +164,3 @@ class Shader
         return ret;
     }
 };
-
-#endif

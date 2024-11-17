@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #if WIN32
 #include <windows.h>
 #endif
@@ -7,15 +8,15 @@
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
 // clang-format on
-#include <glm/glm.hpp>
 #include <backends/imgui_impl_glfw.h>
 #include <backends/imgui_impl_opengl3.h>
 #include <functional>
+#include <glm/glm.hpp>
 #include <imgui.h>
 #include <misc/cpp/imgui_stdlib.h>
 #include <string>
+#include <unordered_map>
 #include <vector>
-
 #ifdef ENABLE_PLOT
 #include <implot.h>
 #endif // ENABLE_PLOT
@@ -61,13 +62,38 @@ class AppBase
     void Run()
     {
         bool cbk_return_false = false;
+        bool firsttime        = true;
         while (!glfwWindowShouldClose(window) && !cbk_return_false)
         {
             /* Render here */
             ImGui_ImplOpenGL3_NewFrame();
             ImGui_ImplGlfw_NewFrame();
             ImGui::NewFrame();
-            ImGui::DockSpaceOverViewport(ImGui::GetMainViewport()->ID);
+            ImGui::DockSpaceOverViewport(0, ImGui::GetMainViewport());
+
+            // check if resized
+            static ImVec2 LastSize = ImGui::GetMainViewport()->Size;
+            const ImVec2 &CurSize  = ImGui::GetMainViewport()->Size;
+            if (LastSize.x != CurSize.x || LastSize.y != CurSize.y)
+            {
+                LastSize  = CurSize;
+                firsttime = true;
+            }
+
+            if (firsttime)
+            {
+                firsttime = false;
+                for (auto &cbk : callbacksBeforeDrawingOnce)
+                {
+                    if (!cbk())
+                    {
+                        cbk_return_false = true;
+                        printf("ImGui AppBase before drawing callback execute faild");
+                        break;
+                    }
+                }
+            }
+
             {
                 for (auto &cbk : callbacks)
                 {
@@ -107,6 +133,16 @@ class AppBase
         }
     }
 
+    void AddBeforeStartDrawing(DrawCallBack cbk)
+    {
+        callbacksBeforeDrawingOnce.emplace_back(cbk);
+    }
+    void RegistLayoutBegin();
+
+    void RegistLayout(const std::string &parentName, const std::string &childName1, const std::string &childName2,
+                      const ImGuiDir dir, const float distRatio);
+    void RegistLayoutEnd();
+
   protected:
     bool BaseInit();
 
@@ -124,6 +160,9 @@ class AppBase
     // draw callbacks
     std::vector<DrawCallBack> callbacks;
     std::vector<DrawCallBack> callbacksAfter;
+    std::vector<DrawCallBack> callbacksBeforeDrawingOnce;
+
+    // layout regist
+    std::unordered_map<std::string, ImGuiID> layoutIds_;
 };
 } // namespace ImGuiApp
-

@@ -1,4 +1,5 @@
 #include "imapp/font.h"
+#include "imgui_internal.h"
 #include <imapp/imapp.h>
 #include <iostream>
 #include <stdexcept>
@@ -78,5 +79,48 @@ void AppBase::SetFontSize()
                                                       io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
     }
     return;
+}
+
+void AppBase::RegistLayout(const std::string &parentName, const std::string &childName1, const std::string &childName2,
+                           const ImGuiDir dir, const float distRatio)
+{
+    // get id
+    ImGuiID pid;
+
+    std::string pname = (parentName.empty() ? "root" : parentName);
+
+    if (layoutIds_.count(pname) == 0)
+    {
+        std::cout << "wrong parent node Name " << pname << std::endl;
+        return;
+    }
+
+    pid      = layoutIds_[pname];
+    ImGuiID cid1, cid2;
+    ImGui::DockBuilderSplitNode(pid, dir, distRatio, &cid1, &cid2);
+    ImGui::DockBuilderDockWindow(childName1.c_str(), cid1);
+    ImGui::DockBuilderDockWindow(childName2.c_str(), cid2);
+    layoutIds_[childName1] = cid1;
+    layoutIds_[childName2] = cid2;
+}
+
+void AppBase::RegistLayoutBegin()
+{
+    constexpr ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_PassthruCentralNode;
+
+    ImGuiViewport *viewport = ImGui::GetMainViewport();
+
+    auto pid = ImGui::DockSpaceOverViewport(0, viewport, dockspace_flags);
+    // create root node and full screen
+    ImGui::DockBuilderRemoveNode(pid);
+    ImGui::DockBuilderAddNode(pid, dockspace_flags | ImGuiDockNodeFlags_DockSpace);
+    ImGui::DockBuilderSetNodeSize(pid, viewport->Size);
+
+    layoutIds_["root"] = pid;
+}
+
+void AppBase::RegistLayoutEnd()
+{
+    ImGui::DockBuilderFinish(layoutIds_["root"]);
 }
 } // namespace ImGuiApp

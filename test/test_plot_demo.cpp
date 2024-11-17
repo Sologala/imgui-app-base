@@ -1,5 +1,5 @@
 #include <chrono>
-#include <imgui_app_base.h>
+#include <imapp/imapp.h>
 #include <implot.h>
 #include <math.h>
 #if defined(WIN32)
@@ -9,13 +9,13 @@
 
 struct ScrollingBuffer
 {
-    int MaxSize;
-    int Offset;
+    int              MaxSize;
+    int              Offset;
     ImVector<ImVec2> Data;
     ScrollingBuffer(int max_size = 2000)
     {
         MaxSize = max_size;
-        Offset = 0;
+        Offset  = 0;
         Data.reserve(MaxSize);
     }
     void AddPoint(float x, float y)
@@ -25,7 +25,7 @@ struct ScrollingBuffer
         else
         {
             Data[Offset] = ImVec2(x, y);
-            Offset = (Offset + 1) % MaxSize;
+            Offset       = (Offset + 1) % MaxSize;
         }
     }
     void Erase()
@@ -42,16 +42,16 @@ int main(int argc, char *argv[])
     ImGuiApp::AppBase::Option opt;
     opt.font_size = 30;
     ImGuiApp::AppBase app("test-app", ImVec2(800, 600), opt);
-    bool clicked = false;
+    bool              clicked = false;
     app.AddDrawCallBack([clicked]() {
         ImPlot::ShowDemoWindow();
         ImGui::Begin("app", nullptr);
         static auto lst_ts = std::chrono::system_clock::now();
-        auto cur_ts = std::chrono::system_clock::now();
-        size_t diff = std::chrono::duration_cast<std::chrono::milliseconds>(cur_ts - lst_ts).count();
-        lst_ts = cur_ts;
+        auto        cur_ts = std::chrono::system_clock::now();
+        size_t      diff   = std::chrono::duration_cast<std::chrono::milliseconds>(cur_ts - lst_ts).count();
+        lst_ts             = cur_ts;
         static ScrollingBuffer dataAnalog;
-        static float t = 0;
+        static float           t = 0;
         dataAnalog.AddPoint(t, 1000.f / std::fmax(static_cast<double>(diff), 0.0001));
 
         t += ImGui::GetIO().DeltaTime;
@@ -61,7 +61,8 @@ int main(int argc, char *argv[])
         if (ImPlot::BeginSubplots("##Digital", 2, 3, ImVec2(-1, 300), 0, rratios, cratios))
         {
 
-            if (ImPlot::BeginPlot("",ImVec2(),ImPlotFlags_NoLegend)) {
+            if (ImPlot::BeginPlot("", ImVec2(), ImPlotFlags_NoLegend))
+            {
                 ImPlot::SetupAxisLimits(ImAxis_X1, t - 10.0, t, ImGuiCond_Always);
                 ImPlot::SetupAxisLimits(ImAxis_Y1, 0, 100);
 

@@ -1,12 +1,11 @@
-#include "canvas/primitives/cylinder.h"
-#include <canvas/primitives/mesh.h>
-#include <imgui_app_base.h>
+#include <imapp/canvas/canvas.h>
+#include <imapp/imapp.h>
+#include <imapp/primitives/cylinder.h>
+#include <imapp/primitives/mesh.h>
 
 #if defined(WIN32)
 #include <windowsx.h>
 #endif
-
-#include "canvas.h"
 
 int main(int argc, char *argv[])
 {

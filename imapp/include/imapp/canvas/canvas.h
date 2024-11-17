@@ -1,9 +1,9 @@
 #pragma once
-#include "canvas/primitives/axis.h"
-#include "canvas/primitives/drawable.h"
+#include "imapp/primitives/axis.h"
+#include "imapp/primitives/drawable.h"
 #include <Eigen/Core>
 #include <Eigen/Geometry>
-#include <frame_buffer_manager.h>
+#include <imapp/canvas/frame_buffer_manager.h>
 #include <unordered_map>
 
 struct MeshGrid : public Drawable

@@ -1,9 +1,7 @@
 #pragma once
 
-#include "canvas/primitives/drawable.h"
-#include "canvas/primitives/shader.h"
-#include <Eigen/src/Core/MathFunctions.h>
 #include <cmath>
+#include <imapp/primitives/drawable.h>
 #include <vector>
 
 struct Cylinder : public Drawable

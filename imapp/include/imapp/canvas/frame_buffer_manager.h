@@ -1,6 +1,5 @@
 #pragma once
-#include <imgui_app_base.h>
-#include <iostream>
+#include <imapp/imapp.h>
 
 struct FrameBufferShader
 {

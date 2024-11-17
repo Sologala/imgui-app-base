@@ -1,9 +1,7 @@
-#include "mesh.h"
 #include "stlreader.h"
-#include <fstream>
-#include <glad/gl.h>   // Make sure to initialize GLEW
-#include <glm/glm.hpp> // You may need to install GLM for this
-#include <iostream>
+#include <glad/gl.h> // Make sure to initialize GLEW #include <glm/glm.hpp> // You may need to install GLM for this
+#include <imapp/imapp.h>
+#include <imapp/primitives/mesh.h>
 #include <map>
 #include <vector>
 

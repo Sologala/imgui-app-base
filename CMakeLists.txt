@@ -12,9 +12,8 @@ set(APP_SOURCE_FILES "")
 
 add_subdirectory(./third_party/)
 
-list(APPEND APP_INCLUDE_DIRS ./src/include)
-
-file(GLOB_RECURSE APP_SOURCE_FILES src/*.cpp)
+list(APPEND APP_INCLUDE_DIRS ./imapp/include)
+file(GLOB_RECURSE APP_SOURCE_FILES ./imapp/src/*.cpp)
 # message("SOURCE FILE " ${APP_SOURCE_FILES})
 
 if(ENABLE_PLOT)
@@ -25,9 +24,13 @@ if(ENABLE_PLOT)
 endif()
 
 find_package(Eigen3 REQUIRED)
+find_package(OpenCV REQUIRED)
+
+
+list(APPEND APP_INCLUDE_DIRS ${OpenCV_INCLUDE_DIRS})
 
 add_library(${PROJECT_NAME} ${APP_SOURCE_FILES})
-target_link_libraries(${PROJECT_NAME} PUBLIC imgui Eigen3::Eigen)
+target_link_libraries(${PROJECT_NAME} PUBLIC imgui Eigen3::Eigen ${OpenCV_LIBS})
 target_include_directories(${PROJECT_NAME}
                            PUBLIC $<BUILD_INTERFACE:${APP_INCLUDE_DIRS}>)
 

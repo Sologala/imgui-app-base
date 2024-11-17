@@ -1,5 +1,3 @@
-#ifndef __IMGUI_APP_HPP_
-#define __IMGUI_APP_HPP_
 #pragma once
 
 #if WIN32
@@ -14,6 +12,7 @@
 #include <backends/imgui_impl_opengl3.h>
 #include <functional>
 #include <imgui.h>
+#include <misc/cpp/imgui_stdlib.h>
 #include <string>
 #include <vector>
 
@@ -128,4 +127,3 @@ class AppBase
 };
 } // namespace ImGuiApp
 
-#endif

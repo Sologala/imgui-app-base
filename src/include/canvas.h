@@ -5,7 +5,6 @@
 #include <Eigen/Geometry>
 #include <frame_buffer_manager.h>
 
-#define M_PI 3.1415926
 class Camera
 {
   public:
@@ -15,9 +14,9 @@ class Camera
     Eigen::Matrix4f getPVM()
     {
         Eigen::Affine3f model = Eigen::Affine3f::Identity();
-        model.translate(Eigen::Vector3f(m_x_trans, m_y_trans, 0.0));                     // 平移
-        model.rotate(Eigen::AngleAxisf(m_x_rot / 180 * M_PI, Eigen::Vector3f::UnitX())); // 绕X轴旋转
-        model.rotate(Eigen::AngleAxisf(m_z_rot / 180 * M_PI, Eigen::Vector3f::UnitZ())); // 绕X轴旋转
+        model.translate(Eigen::Vector3f(m_x_trans, m_y_trans, 0.0));                         // 平移
+        model.rotate(Eigen::AngleAxisf(m_x_rot / 180 * EIGEN_PI, Eigen::Vector3f::UnitX())); // 绕X轴旋转
+        model.rotate(Eigen::AngleAxisf(m_z_rot / 180 * EIGEN_PI, Eigen::Vector3f::UnitZ())); // 绕X轴旋转
 
         // 设置视图矩阵
         Eigen::Affine3f view = Eigen::Affine3f::Identity();
@@ -27,9 +26,9 @@ class Camera
         view = lookAt(eye, center, up);
 
         // 设置投影矩阵
-        float       near_        = 0.1f;                               // 近裁剪面
-        float       far_         = 100.0f;                             // 远裁剪面
-        float       fov         = m_zoom / 180 * M_PI;                // 垂直视场角度 (弧度)
+        float       near_       = 0.1f;                               // 近裁剪面
+        float       far_        = 100.0f;                             // 远裁剪面
+        float       fov         = m_zoom / 180 * EIGEN_PI;            // 垂直视场角度 (弧度)
         float       aspectRatio = (float)fb_width / (float)fb_height; // 宽高比
         const float tanHalfFovy = tan(0.5 * fov);
 
@@ -46,7 +45,7 @@ class Camera
         assert(aspect > 0);
         assert(zFar > zNear);
         assert(zNear > 0);
-        float radf          = M_PI * fovy / 180.0;
+        float radf          = EIGEN_PI * fovy / 180.0;
         float tan_half_fovy = std::tan(radf / 2.0);
         tr(0, 0)            = 1.0 / (aspect * tan_half_fovy);
         tr(1, 1)            = 1.0 / (tan_half_fovy);

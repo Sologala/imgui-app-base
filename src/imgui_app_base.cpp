@@ -1,8 +1,10 @@
 #include "Unbutu.h"
 #include <imgui_app_base.h>
-
+#include <iostream>
+#include <stdexcept>
 namespace ImGuiApp
 {
+
 bool AppBase::BaseInit()
 {
     auto glfw_error_callback = [](int error_code, const char *description) {
@@ -14,10 +16,6 @@ bool AppBase::BaseInit()
         throw std::runtime_error("Glfw init faild");
     }
     glfwWindowHint(GLFW_SAMPLES, 4);
-    glEnable(GL_MULTISAMPLE);
-    glEnable(GL_LINE_SMOOTH);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     if (wnd_size.x < 1.f && wnd_size.y < 1.f)
     {
@@ -33,7 +31,16 @@ bool AppBase::BaseInit()
         throw std::runtime_error("Windows create faild");
     }
     glfwMakeContextCurrent(window);
-    glewInit();
+    int version = gladLoadGL(glfwGetProcAddress);
+    if (version == 0)
+    {
+        std::cout << "Failed to initialize OpenGL context" << std::endl;
+        return -1;
+    }
+    glEnable(GL_MULTISAMPLE);
+    glEnable(GL_LINE_SMOOTH);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     context = ImGui::CreateContext();
 #ifdef ENABLE_PLOT

@@ -6,15 +6,14 @@
 #include <windows.h>
 #endif
 // clang-format off
-#include <GL/glew.h>
+#include <glad/gl.h>
 #include <GLFW/glfw3.h>
 // clang-format on
 
+#include <backends/imgui_impl_glfw.h>
+#include <backends/imgui_impl_opengl3.h>
 #include <functional>
 #include <imgui.h>
-#include <imgui_impl_glfw.h>
-#include <imgui_impl_opengl3.h>
-#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -69,7 +68,7 @@ class AppBase
             ImGui_ImplOpenGL3_NewFrame();
             ImGui_ImplGlfw_NewFrame();
             ImGui::NewFrame();
-            ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
+            ImGui::DockSpaceOverViewport(ImGui::GetMainViewport()->ID);
             {
                 for (auto &cbk : callbacks)
                 {
@@ -82,8 +81,9 @@ class AppBase
                 }
             }
 
-            // We specify a default position/size in case there's no data in the .ini file.
-            // We only do it to make the demo applications a little more welcoming, but typically this isn't required.
+            // We specify a default position/size in case there's no data in the .ini
+            // file. We only do it to make the demo applications a little more
+            // welcoming, but typically this isn't required.
 
             ImGui::Render();
             {

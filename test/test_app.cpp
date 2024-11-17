@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
 
         ImVec2 pos = ImGui::GetCursorScreenPos();
 
-        ImGui::GetWindowDrawList()->AddImage((void *)canvas.GetTextureId(), ImVec2(pos.x, pos.y),
+        ImGui::GetWindowDrawList()->AddImage(canvas.GetTextureId(), ImVec2(pos.x, pos.y),
                                              ImVec2(pos.x + window_width, pos.y + window_height), ImVec2(0, 1),
                                              ImVec2(1, 0));
 

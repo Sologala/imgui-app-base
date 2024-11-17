@@ -2,15 +2,15 @@ cmake_minimum_required(VERSION 3.12)
 
 project(imgui_app_base)
 
-include(./cmake/imgui-gl.cmake)
-
+# include(./cmake/imgui-gl.cmake)
 option(ENABLE_PLOT "ENABLE_IMPLOT" ON)
-option(BUILD_TEST "build imgui_app_base test" OFF)
+option(BUILD_TEST "build imgui_app_base test" ON)
 
 set(CMAKE_CXX_STANDARD 11)
-
 set(APP_INCLUDE_DIRS "")
 set(APP_SOURCE_FILES "")
+
+add_subdirectory(./third_party/)
 
 list(APPEND APP_INCLUDE_DIRS ./src/include)
 list(APPEND APP_SOURCE_FILES ./src/imgui_app_base.cpp)

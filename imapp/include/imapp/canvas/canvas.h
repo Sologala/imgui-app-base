@@ -107,8 +107,8 @@ class Camera
     {
         Eigen::Affine3f model = Eigen::Affine3f::Identity();
         model.translate(Eigen::Vector3f(m_x_trans, m_y_trans, 0.0));                     // 平移
-        model.rotate(Eigen::AngleAxisf(m_y_rot / 180 * M_PI, Eigen::Vector3f::UnitY())); // 绕X轴旋转
-        model.rotate(Eigen::AngleAxisf(m_z_rot / 180 * M_PI, Eigen::Vector3f::UnitZ())); // 绕Z轴旋转
+        model.rotate(Eigen::AngleAxisf(m_y_rot / 180 * EIGEN_PI, Eigen::Vector3f::UnitY())); // 绕X轴旋转
+        model.rotate(Eigen::AngleAxisf(m_z_rot / 180 * EIGEN_PI, Eigen::Vector3f::UnitZ())); // 绕Z轴旋转
 
         Eigen::Affine3f view = Eigen::Affine3f::Identity();
         Eigen::Vector3f eye(-20.0, 0, 30.0);
@@ -117,14 +117,14 @@ class Camera
         view = Camera::lookAt(eye, center, up);
 
         // 设置投影矩阵
-        float       near        = 0.1f;                               // 近裁剪面
-        float       far         = 1000.0f;                            // 远裁剪面
-        float       fov         = m_zoom / 180 * M_PI;                // 垂直视场角度 (弧度)
+        float       mnear        = 0.1f;                               // 近裁剪面
+        float       mfar         = 1000.0f;                            // 远裁剪面
+        float       fov         = m_zoom / 180 * EIGEN_PI;                // 垂直视场角度 (弧度)
         float       aspectRatio = (float)fb_width / (float)fb_height; // 宽高比
         const float tanHalfFovy = tan(0.5 * fov);
 
         Eigen::Matrix4f projection = Eigen::Matrix4f::Zero();
-        projection                 = perspective(m_zoom, aspectRatio, near, far);
+        projection                 = perspective(m_zoom, aspectRatio, mnear, mfar);
         // 计算总的MVP矩阵
         return (projection * view.matrix() * model.matrix());
     }
@@ -136,7 +136,7 @@ class Camera
         assert(aspect > 0);
         assert(zFar > zNear);
         assert(zNear > 0);
-        float fovy_rad      = M_PI * fovy / 180.0;
+        float fovy_rad      = EIGEN_PI * fovy / 180.0;
         float fovy_rad_half = fovy_rad / 2;
         float fy            = 1.0 / std::tan(fovy_rad_half);
         float fx            = 1.0 / (aspect * std::tan(fovy_rad_half));

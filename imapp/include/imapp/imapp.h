@@ -143,6 +143,13 @@ class AppBase
                       const ImGuiDir dir, const float distRatio);
     void RegistLayoutEnd();
 
+    ImGuiID GetLayoutID(const std::string &name)
+    {
+        if (layoutIds_.count(name) == 0)
+            return 0;
+        return layoutIds_[name];
+    }
+
   protected:
     bool BaseInit();
 

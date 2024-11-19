@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
 {
     ImGuiApp::AppBase::Option opt;
     opt.font_size = 30;
-    ImGuiApp::AppBase app("test-app", ImVec2(800, 600), opt);
+    ImGuiApp::AppBase app("test-app", ImVec2(1600, 900), opt);
 
     bool clicked = false;
 
@@ -19,10 +19,17 @@ int main(int argc, char *argv[])
 
     Cylinder::Sptr cylinder = std::make_shared<Cylinder>();
 
-    Mesh::Sptr mesh = std::make_shared<Mesh>("resource/sedan.stl");
+    Mesh::Sptr mesh = std::make_shared<Mesh>("../resource/sedan.stl");
     mesh->SetAlpha(0.85f);
     canvas.AddDrawable("mesh", mesh, true);
     // canvas.AddDrawable("cylinder", cylinder);
+
+    app.AddBeforeStartDrawing([&]() {
+        app.RegistLayoutBegin();
+        app.RegistLayout("", "viewport", "app", ImGuiDir_Left, 0.5);
+        app.RegistLayoutEnd();
+        return true;
+    });
 
     app.AddDrawCallBack([clicked]() {
         ImGui::Begin("app", nullptr);
@@ -40,6 +47,16 @@ int main(int argc, char *argv[])
     });
     app.AddDrawCallBack([&]() {
         canvas.Draw();
+        return true;
+    });
+
+    app.AddDrawCallBack([&]() {
+        ImGui::SetNextWindowDockID(app.GetLayoutID("viewport"), ImGuiCond_Always);
+        ImGui::Begin("test");
+        ImGui::Text("hhh");
+        ImGui::End();
+        ImGui::SetNextWindowDockID(app.GetLayoutID("app"), ImGuiCond_Once);
+        ImGui::ShowDemoWindow();
         return true;
     });
 

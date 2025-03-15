@@ -95,7 +95,7 @@ void AppBase::RegistLayout(const std::string &parentName, const std::string &chi
         return;
     }
 
-    pid      = layoutIds_[pname];
+    pid = layoutIds_[pname];
     ImGuiID cid1, cid2;
     ImGui::DockBuilderSplitNode(pid, dir, distRatio, &cid1, &cid2);
     ImGui::DockBuilderDockWindow(childName1.c_str(), cid1);
@@ -110,13 +110,12 @@ void AppBase::RegistLayoutBegin()
 
     ImGuiViewport *viewport = ImGui::GetMainViewport();
 
-    auto pid = ImGui::DockSpaceOverViewport(0, viewport, dockspace_flags);
     // create root node and full screen
-    ImGui::DockBuilderRemoveNode(pid);
-    ImGui::DockBuilderAddNode(pid, dockspace_flags | ImGuiDockNodeFlags_DockSpace);
-    ImGui::DockBuilderSetNodeSize(pid, viewport->Size);
+    ImGui::DockBuilderRemoveNode(main_win_id_);
+    ImGui::DockBuilderAddNode(main_win_id_, dockspace_flags | ImGuiDockNodeFlags_DockSpace);
+    ImGui::DockBuilderSetNodeSize(main_win_id_, viewport->Size);
 
-    layoutIds_["root"] = pid;
+    layoutIds_["root"] = main_win_id_;
 }
 
 void AppBase::RegistLayoutEnd()

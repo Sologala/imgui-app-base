@@ -69,7 +69,7 @@ class AppBase
             ImGui_ImplOpenGL3_NewFrame();
             ImGui_ImplGlfw_NewFrame();
             ImGui::NewFrame();
-            ImGui::DockSpaceOverViewport(0, ImGui::GetMainViewport());
+            main_win_id_ = ImGui::DockSpaceOverViewport(0, ImGui::GetMainViewport());
 
             // check if resized
             static ImVec2 LastSize = ImGui::GetMainViewport()->Size;
@@ -159,6 +159,7 @@ class AppBase
   protected:
     GLFWwindow   *window;
     ImGuiContext *context;
+    ImGuiID       main_win_id_;
     std::string   wnd_name;
     ImVec2        wnd_size;
     Option        opt;
